@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALPIVIE — Style That Shreds</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Inter:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --dark: #1a1a1a;
+      --offwhite: #f6f4f2;
+      --cream: #e6cfc4;
+      --teal: #2d7a8a;
+      --brown: #3d2b22;
+      --body-font: 'Inter', -apple-system, sans-serif;
+      --heading-font: 'Playfair Display', Georgia, serif;
+      --display-font: 'Bebas Neue', 'Inter', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: var(--body-font);
+      color: var(--dark);
+      background: #fff;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Sticky Nav ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.4s, padding 0.4s, backdrop-filter 0.4s;
+    }
+
+    nav.scrolled {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 14px 40px;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+    }
+
+    .nav-logo {
+      font-family: var(--display-font);
+      font-size: 24px;
+      letter-spacing: 4px;
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.4s;
+    }
+
+    nav.scrolled .nav-logo {
+      color: var(--dark);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: color 0.4s;
+    }
+
+    nav.scrolled .nav-links a {
+      color: var(--dark);
+    }
+
+    .nav-links a:hover {
+      opacity: 0.6;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 700px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: var(--dark);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url("images/gray-front.png") center/cover no-repeat;
+      transform: scale(1.5);
+      transition: transform 8s ease-out;
+    }
+
+    .hero.in-view .hero-bg {
+      transform: scale(1);
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.3) 0%,
+        rgba(0,0,0,0.15) 50%,
+        rgba(0,0,0,0.5) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: #fff;
+    }
+
+    .hero-content h1 {
+      font-family: var(--display-font);
+      font-size: clamp(60px, 10vw, 130px);
+      letter-spacing: 12px;
+      line-height: 0.95;
+      opacity: 0;
+      transform: translateY(40px);
+      animation: fadeUp 1s 0.3s forwards;
+    }
+
+    .hero-tagline {
+      font-size: clamp(14px, 1.8vw, 18px);
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      margin-top: 16px;
+      font-weight: 300;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1s 0.6s forwards;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 16px 40px;
+      border: 1px solid rgba(255,255,255,0.6);
+      color: #fff;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      transition: background 0.4s, color 0.4s;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1s 0.9s forwards;
+    }
+
+    .hero-cta:hover {
+      background: #fff;
+      color: var(--dark);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeUp 1s 1.4s forwards;
+    }
+
+    .scroll-indicator span {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: rgba(255,255,255,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      animation: scrollDown 2s infinite;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scrollDown {
+      0% { top: -100%; }
+      100% { top: 100%; }
+    }
+
+    /* ── Scroll Reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(60px);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.15s; }
+    .reveal-delay-2 { transition-delay: 0.3s; }
+    .reveal-delay-3 { transition-delay: 0.45s; }
+
+    /* ── Section: Intro ── */
+    .intro {
+      padding: 140px 40px;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .intro .eyebrow {
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--teal);
+      font-weight: 500;
+      margin-bottom: 24px;
+    }
+
+    .intro h2 {
+      font-family: var(--heading-font);
+      font-size: clamp(32px, 4vw, 48px);
+      line-height: 1.3;
+      font-weight: 500;
+    }
+
+    .intro p {
+      font-size: 17px;
+      line-height: 1.8;
+      color: #555;
+      margin-top: 24px;
+      font-weight: 300;
+    }
+
+    /* ── Section: Full-width Image + Text Overlay ── */
+    .full-image-section {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+    }
+
+    .full-image-section img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .full-image-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 80px 60px;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+      color: #fff;
+    }
+
+    .full-image-overlay .eyebrow {
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      color: var(--cream);
+    }
+
+    .full-image-overlay h2 {
+      font-family: var(--heading-font);
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 500;
+      max-width: 500px;
+    }
+
+    /* ── Section: Split (Image + Text) ── */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 90vh;
+    }
+
+    .split-image {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .split-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .split-image:hover img {
+      transform: scale(1.03);
+    }
+
+    .split-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 60px;
+    }
+
+    .split-text .eyebrow {
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--teal);
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    .split-text h2 {
+      font-family: var(--heading-font);
+      font-size: clamp(28px, 3vw, 42px);
+      font-weight: 500;
+      line-height: 1.25;
+    }
+
+    .split-text p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: #555;
+      margin-top: 20px;
+      font-weight: 300;
+      max-width: 440px;
+    }
+
+    /* ── Color Switcher Section ── */
+    .color-switch-section {
+      padding: 120px 40px;
+      background: var(--offwhite);
+      text-align: center;
+    }
+
+    .color-switch-section .eyebrow {
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--teal);
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    .color-switch-section h2 {
+      font-family: var(--heading-font);
+      font-size: clamp(30px, 3.5vw, 46px);
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .color-switch-section > p {
+      font-size: 16px;
+      color: #555;
+      font-weight: 300;
+      max-width: 500px;
+      margin: 0 auto 50px;
+      line-height: 1.7;
+    }
+
+    .color-swatches {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 50px;
+    }
+
+    .swatch {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      cursor: pointer;
+      transition: border-color 0.3s, transform 0.3s;
+      position: relative;
+    }
+
+    .swatch::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      transition: border-color 0.3s;
+    }
+
+    .swatch.active::after {
+      border-color: var(--dark);
+    }
+
+    .swatch:hover {
+      transform: scale(1.1);
+    }
+
+    .swatch-black { background: #1a1a1a; }
+    .swatch-gray { background: #6b7280; }
+
+    .color-display {
+      position: relative;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .color-display-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .color-image-wrapper {
+      overflow: hidden;
+      border-radius: 4px;
+    }
+
+    .color-image-wrapper img {
+      width: 100%;
+      display: block;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .color-image-wrapper img.hidden {
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .color-image-slot {
+      position: relative;
+    }
+
+    .color-image-slot img {
+      width: 100%;
+      display: block;
+      transition: opacity 0.5s ease;
+    }
+
+    .color-image-slot img.fade-out {
+      opacity: 0;
+    }
+
+    .color-label {
+      margin-top: 40px;
+      font-family: var(--heading-font);
+      font-size: 22px;
+      font-style: italic;
+    }
+
+    /* ── Detail Section (Parallax-like) ── */
+    .detail-section {
+      position: relative;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 80vh;
+    }
+
+    .detail-image {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .detail-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .detail-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 60px;
+      background: var(--dark);
+      color: #fff;
+    }
+
+    .detail-text .eyebrow {
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--cream);
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    .detail-text h2 {
+      font-family: var(--heading-font);
+      font-size: clamp(28px, 3vw, 42px);
+      font-weight: 500;
+      line-height: 1.25;
+    }
+
+    .detail-text p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.7);
+      margin-top: 20px;
+      font-weight: 300;
+      max-width: 440px;
+    }
+
+    /* ── Horizontal Scroll Gallery ── */
+    .gallery-section {
+      padding: 120px 0 120px 40px;
+      overflow: hidden;
+    }
+
+    .gallery-section .eyebrow {
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--teal);
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    .gallery-section h2 {
+      font-family: var(--heading-font);
+      font-size: clamp(30px, 3.5vw, 46px);
+      font-weight: 500;
+      margin-bottom: 50px;
+    }
+
+    .gallery-track {
+      display: flex;
+      gap: 24px;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .gallery-track:active {
+      cursor: grabbing;
+    }
+
+    .gallery-track img {
+      height: 65vh;
+      min-height: 400px;
+      width: auto;
+      object-fit: cover;
+      border-radius: 4px;
+      flex-shrink: 0;
+      pointer-events: none;
+    }
+
+    /* ── Pre-order / CTA Section ── */
+    .preorder-section {
+      position: relative;
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      background: var(--dark);
+    }
+
+    .preorder-bg {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      opacity: 0.15;
+      filter: grayscale(0.3);
+    }
+
+    .preorder-bg img {
+      height: 100%;
+      object-fit: cover;
+      width: 50%;
+    }
+
+    .preorder-content {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      padding: 40px;
+    }
+
+    .preorder-content .eyebrow {
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--cream);
+      margin-bottom: 20px;
+    }
+
+    .preorder-content h2 {
+      font-family: var(--heading-font);
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 500;
+      line-height: 1.2;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .preorder-content p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.65);
+      margin-top: 20px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      font-weight: 300;
+    }
+
+    .preorder-btn {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 18px 50px;
+      background: var(--cream);
+      color: var(--dark);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      transition: background 0.4s, transform 0.3s;
+    }
+
+    .preorder-btn:hover {
+      background: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 60px 40px;
+      background: var(--offwhite);
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-family: var(--display-font);
+      font-size: 28px;
+      letter-spacing: 6px;
+      color: var(--dark);
+    }
+
+    .footer-tagline {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #999;
+      margin-top: 8px;
+    }
+
+    footer p {
+      font-size: 13px;
+      color: #999;
+      margin-top: 30px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      nav.scrolled { padding: 12px 20px; }
+      .nav-links { display: none; }
+
+      .split {
+        grid-template-columns: 1fr;
+      }
+
+      .split-image {
+        min-height: 60vh;
+      }
+
+      .split-text {
+        padding: 50px 24px;
+      }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-image {
+        min-height: 50vh;
+      }
+
+      .detail-text {
+        padding: 50px 24px;
+      }
+
+      .color-display-inner {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .full-image-overlay {
+        padding: 40px 24px;
+      }
+
+      .intro {
+        padding: 80px 24px;
+      }
+
+      .gallery-section {
+        padding: 80px 0 80px 24px;
+      }
+
+      .preorder-content {
+        padding: 40px 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── Nav ── -->
+  <nav id="nav">
+    <a href="#" class="nav-logo">ALPIVIE</a>
+    <ul class="nav-links">
+      <li><a href="#story">Story</a></li>
+      <li><a href="#product">Product</a></li>
+      <li><a href="#colors">Colors</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#preorder">Pre-Order</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1>ALPIVIE</h1>
+      <div class="hero-tagline">Style That Shreds</div>
+      <a class="hero-cta" href="mailto:nigina@alpivie.com?subject=Buttermilk%20Ski%20Suit%20Inquiry">Get In Touch</a>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ── Intro ── -->
+  <section class="intro" id="story">
+    <div class="eyebrow reveal">Our Story</div>
+    <h2 class="reveal reveal-delay-1">Finally, you don't have to choose.</h2>
+    <p class="reveal reveal-delay-2">We were tired of ski wear that was warm but bulky, technical but unflattering, stylish but impractical. So we created Alpivie — ski wear that flatters your form, performs in the snow, and makes you feel as good as you look.</p>
+  </section>
+
+  <!-- ── Full-width Model Shot ── -->
+  <section class="full-image-section" id="product">
+    <img src="images/black-front-pretty-shape.png" alt="Model wearing the Buttermilk Ski Suit in black" loading="lazy">
+    <div class="full-image-overlay">
+      <div class="eyebrow reveal">Introducing</div>
+      <h2 class="reveal reveal-delay-1">The Buttermilk Ski Suit</h2>
+    </div>
+  </section>
+
+  <!-- ── Split: Product + Text ── -->
+  <section class="split">
+    <div class="split-image">
+      <img src="images/black-side.png" alt="Buttermilk Ski Suit flat lay, gray colorway" loading="lazy">
+    </div>
+    <div class="split-text">
+      <div class="eyebrow reveal">Designed for Real Women</div>
+      <h2 class="reveal reveal-delay-1">Sleek Tailoring Meets Alpine Performance</h2>
+      <p class="reveal reveal-delay-2">A piece that combines sleek tailoring with technical precision, ensuring you look as sharp as you ski. Designed to move with you while flattering your natural shape.</p>
+    </div>
+  </section>
+
+  <!-- ── Detail Close-up ── -->
+  <section class="detail-section">
+    <div class="detail-grid">
+      <div class="detail-image">
+        <img src="images/front-flat-closeup-gray.png" alt="Close-up of chevron detail on the Buttermilk Suit" loading="lazy">
+      </div>
+      <div class="detail-text">
+        <div class="eyebrow reveal">The Devil Is in the Details</div>
+        <h2 class="reveal reveal-delay-1">Precision Chevron Lines</h2>
+        <p class="reveal reveal-delay-2">The magic is in the details: the parallel-sewn chevron lines not only visually streamline your silhouette, but also reinforce the fit. Every stitch is intentional.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Color Switcher ── -->
+  <section class="color-switch-section" id="colors">
+    <div class="eyebrow reveal">Two Colorways</div>
+    <h2 class="reveal reveal-delay-1">Choose Your Line</h2>
+    <p class="reveal reveal-delay-2">One design, two attitudes. Select a colorway to explore.</p>
+
+    <div class="color-swatches reveal reveal-delay-3">
+      <div class="swatch swatch-black active" data-color="black" role="button" tabindex="0" aria-label="View black colorway"></div>
+      <div class="swatch swatch-gray" data-color="gray" role="button" tabindex="0" aria-label="View gray colorway"></div>
+    </div>
+
+    <div class="color-display">
+      <div class="color-display-inner">
+        <div class="color-image-slot">
+          <img src="images/front-flat-black.png" alt="Front view" class="color-img" data-black="images/front-flat-black.png" data-gray="images/front-flat-gray.png" loading="lazy">
+        </div>
+        <div class="color-image-slot">
+          <img src="images/front-model-black.png" alt="On model" class="color-img" data-black="images/front-model-black.png" data-gray="images/front-model-gray.png" loading="lazy">
+        </div>
+        <div class="color-image-slot">
+          <img src="images/front-flat-closeup-black.png" alt="Detail view" class="color-img" data-black="images/front-flat-closeup-black.png" data-gray="images/front-flat-closeup-gray.png" loading="lazy">
+        </div>
+      </div>
+      <div class="color-label reveal" id="colorLabel">Midnight Black</div>
+    </div>
+  </section>
+
+  <!-- ── Split: Gray colorway on model ── -->
+  <section class="split">
+    <div class="split-text" style="background: var(--offwhite);">
+      <div class="eyebrow reveal">Made for the Mountain</div>
+      <h2 class="reveal reveal-delay-1">Wear It Your Way</h2>
+      <p class="reveal reveal-delay-2">With adjustable straps and a flattering sweetheart neckline, the Buttermilk pairs effortlessly with your favorite base layer. From the chairlift to apr&egrave;s, this is the suit that does it all.</p>
+    </div>
+    <div class="split-image">
+      <img src="images/gray.png" alt="Model in gray Buttermilk Suit on the mountain" loading="lazy">
+    </div>
+  </section>
+
+  <!-- ── Horizontal Scroll Gallery ── -->
+  <section class="gallery-section" id="gallery">
+    <div class="eyebrow reveal">Lookbook</div>
+    <h2 class="reveal reveal-delay-1">Every Angle</h2>
+    <div class="gallery-track" id="galleryTrack">
+      <img src="images/front-model-black.png" alt="Front view, black" loading="lazy">
+      <img src="images/side-model-black.png" alt="Side view, black" loading="lazy">
+      <img src="images/front-model-gray.png" alt="Front view, gray" loading="lazy">
+      <img src="images/side-model-gray.png" alt="Side view, gray" loading="lazy">
+      <img src="images/back-model-gray.png" alt="Back view, gray" loading="lazy">
+      <img src="images/front-flat-black.png" alt="Flat lay, black" loading="lazy">
+      <img src="images/front-flat-gray.png" alt="Flat lay, gray" loading="lazy">
+    </div>
+  </section>
+
+  <!-- ── Pre-order CTA ── -->
+  <section class="preorder-section" id="preorder">
+    <div class="preorder-bg">
+      <img src="images/no background black.png" alt="" aria-hidden="true">
+      <img src="images/no background.png" alt="" aria-hidden="true">
+    </div>
+    <div class="preorder-content">
+      <div class="eyebrow reveal">Limited Production</div>
+      <h2 class="reveal reveal-delay-1">When They're Gone, They're Gone</h2>
+      <p class="reveal reveal-delay-2">We've made only a limited number, in two colors. Conscious production, made to order. Don't miss yours.</p>
+      <a class="preorder-btn reveal reveal-delay-3" href="mailto:nigina@alpivie.com?subject=Buttermilk%20Ski%20Suit%20Inquiry">Get In Touch</a>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="footer-logo">ALPIVIE</div>
+    <div class="footer-tagline">Style That Shreds</div>
+    <p>&copy; 2025 Alpivie. All rights reserved.</p>
+  </footer>
+
+  <!-- ── Scripts ── -->
+  <script>
+    // ── Nav scroll behavior ──
+    const nav = document.getElementById('nav');
+    const hero = document.querySelector('.hero');
+
+    function handleNav() {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }
+    window.addEventListener('scroll', handleNav, { passive: true });
+
+    // ── Hero Ken Burns trigger ──
+    requestAnimationFrame(() => hero.classList.add('in-view'));
+
+    // ── Scroll Reveal (Intersection Observer) ──
+    const reveals = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    reveals.forEach(el => revealObserver.observe(el));
+
+    // ── Color Switcher ──
+    const swatches = document.querySelectorAll('.swatch');
+    const colorImages = document.querySelectorAll('.color-img');
+    const colorLabel = document.getElementById('colorLabel');
+    const labels = { black: 'Midnight Black', gray: 'Alpine Gray' };
+
+    // Preload gray images
+    colorImages.forEach(img => {
+      const grayUrl = img.dataset.gray;
+      if (grayUrl) {
+        const preload = new Image();
+        preload.src = grayUrl;
+      }
+    });
+
+    swatches.forEach(swatch => {
+      swatch.addEventListener('click', () => {
+        const color = swatch.dataset.color;
+        swatches.forEach(s => s.classList.remove('active'));
+        swatch.classList.add('active');
+
+        colorImages.forEach(img => {
+          img.style.opacity = '0';
+          setTimeout(() => {
+            img.src = img.dataset[color];
+            img.style.opacity = '1';
+          }, 300);
+        });
+
+        colorLabel.style.opacity = '0';
+        setTimeout(() => {
+          colorLabel.textContent = labels[color];
+          colorLabel.style.opacity = '1';
+        }, 300);
+      });
+    });
+
+    // ── Draggable Gallery ──
+    const track = document.getElementById('galleryTrack');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    track.addEventListener('mousedown', (e) => {
+      isDown = true;
+      track.style.cursor = 'grabbing';
+      startX = e.pageX - track.offsetLeft;
+      scrollLeft = track.scrollLeft;
+    });
+
+    track.addEventListener('mouseleave', () => {
+      isDown = false;
+      track.style.cursor = 'grab';
+    });
+
+    track.addEventListener('mouseup', () => {
+      isDown = false;
+      track.style.cursor = 'grab';
+    });
+
+    track.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - track.offsetLeft;
+      const walk = (x - startX) * 2;
+      track.scrollLeft = scrollLeft - walk;
+    });
+
+    // Touch support for gallery
+    let touchStartX = 0;
+    let touchScrollLeft = 0;
+
+    track.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].pageX;
+      touchScrollLeft = track.scrollLeft;
+    }, { passive: true });
+
+    track.addEventListener('touchmove', (e) => {
+      const x = e.touches[0].pageX;
+      const walk = (touchStartX - x) * 1.5;
+      track.scrollLeft = touchScrollLeft + walk;
+    }, { passive: true });
+
+    // Make gallery track scrollable
+    track.style.overflowX = 'auto';
+    track.style.scrollbarWidth = 'none';
+    track.style.msOverflowStyle = 'none';
+
+    // ── Smooth anchor scrolling ──
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
